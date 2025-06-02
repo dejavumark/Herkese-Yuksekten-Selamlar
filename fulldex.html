@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Geliştirme Aşamasında</title>
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --text-color: #ffffff;
+      --button-bg: rgba(255, 255, 255, 0.1);
+      --button-text: #fff;
+    }
+
+    body.day-mode {
+      --bg-color: #f5f5f5;
+      --text-color: #111;
+      --button-bg: rgba(0, 0, 0, 0.1);
+      --button-text: #000;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: background-color 0.4s, color 0.4s;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      padding: 20px;
+    }
+
+    button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+      backdrop-filter: blur(4px);
+    }
+
+    button:hover {
+      background-color: rgba(255,255,255,0.2);
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="toggleMode()">🌗 Gece / Gündüz</button>
+  <h1>🚧 Bu site şu anda geliştirme aşamasında 🚧</h1>
+  <canvas id="snow"></canvas>
+
+  <script>
+    // Gece/Gündüz modu
+    function toggleMode() {
+      document.body.classList.toggle('day-mode');
+    }
+
+    // Kar efekti
+    const canvas = document.getElementById("snow");
+    const ctx = canvas.getContext("2d");
+    let width, height, flakes = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    function createFlakes() {
+      flakes = Array.from({ length: 100 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 3 + 1,
+        s: Math.random() * 1 + 0.5
+      }));
+    }
+
+    function drawFlakes() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "white";
+      for (let flake of flakes) {
+        ctx.beginPath();
+        ctx.arc(flake.x, flake.y, flake.r, 0, Math.PI * 2);
+        ctx.fill();
+        flake.y += flake.s;
+        if (flake.y > height) {
+          flake.y = 0;
+          flake.x = Math.random() * width;
+        }
+      }
+      requestAnimationFrame(drawFlakes);
+    }
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createFlakes();
+    });
+
+    resizeCanvas();
+    createFlakes();
+    drawFlakes();
+  </script>
+</body>
+</html>
