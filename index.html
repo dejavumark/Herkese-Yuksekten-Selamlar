@@ -42,6 +42,10 @@
       font-size: 2.5rem;
       text-align: center;
       padding: 20px;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
     button {
@@ -72,12 +76,15 @@
     }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false">
   <button onclick="toggleMode()">🌗 Gece / Gündüz</button>
   <h1>🚧 Bu site şu anda geliştirme aşamasında 🚧</h1>
   <canvas id="snow"></canvas>
 
   <script>
+    // Sağ tık engelleme
+    document.addEventListener("contextmenu", e => e.preventDefault());
+
     // Gece/Gündüz modu
     function toggleMode() {
       document.body.classList.toggle('day-mode');
